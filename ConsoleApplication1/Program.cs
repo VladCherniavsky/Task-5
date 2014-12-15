@@ -11,12 +11,12 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-            Worker worker = new Worker();
-            var list = worker.GetAll();
-            foreach (var managerDto in list)
-            {
-                Console.WriteLine(managerDto.Name);
-            }
+            //Worker worker = new Worker();
+            //var list = worker.GetAll();
+            //foreach (var managerDto in list)
+            //{
+            //    Console.WriteLine(managerDto.Name);
+            //}
         }
     }
 }

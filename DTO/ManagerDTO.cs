@@ -17,6 +17,9 @@ namespace DTO
             Id = manager.Id;
             Name = manager.Name;
         }
+        public ManagerDTO()
+        {
+        }
 
         public virtual ICollection<Content> Content { get; set; }
     }

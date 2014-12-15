@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using DAL;
@@ -11,49 +13,58 @@ namespace BLL
     public class Worker
     {
         private Object _lockerForManager;
-        public IList<ManagerDTO>  GetAll()
+        public async Task<IList<ManagerDTO>>  GetAllAsync()
         {
             List<ManagerDTO> managers = new List<ManagerDTO>();
             using (DbModelContainer db = new DbModelContainer())
             {
-                var managersList = db.ManagerSet.ToList();
-                foreach (var manager in managersList)
+                var managersList = db.ManagerSet.ToListAsync();
+                foreach (var manager in await managersList)
                 {
-                    ManagerDTO managerDTO = new ManagerDTO(manager);
+                    ManagerDTO managerDto = new ManagerDTO(manager);
                    
-                    managers.Add(managerDTO);
+                    managers.Add(managerDto);
                 }
             }
             return managers;
         }
 
-        public ManagerDTO GetOneManagerByIf(int id)
-        {
-            ManagerDTO managertoEdit;
-            using (DbModelContainer db = new DbModelContainer())
-            {
-                var manager = db.ManagerSet.SingleOrDefault(x => x.Id == id);
-                managertoEdit = new ManagerDTO(manager);
+        //public async Task<ManagerDTO> GetOneManagerByIdAsync(int id)
+        //{
+        //    ManagerDTO managertoEdit;
+        //    using (DbModelContainer db = new DbModelContainer())
+        //    {
+        //        var manager = db.ManagerSet.SingleOrDefaultAsync(x => x.Id == id);
+        //        managertoEdit =   new  ManagerDTO();
+        //        managertoEdit.Id = manager.Id;
+        //        managertoEdit.Name = manager.
 
-            }
-            return managertoEdit;
-        }
+        //    }
+        //   return managertoEdit;
+        //}
 
-        public IList<ContentDTO> GetContentForOneManager(int id)
+        public async  Task<IList<ContentDTO>> GetContentForOneManagerAsync(int id)
         {
             List<ContentDTO> listContentDTO;
             using (DbModelContainer db = new DbModelContainer())
             {
-                var content = db.ContentSet.Where(x => x.ManagerId == id).ToList().Select(x => new ContentDTO()
+                var content = await (from b in db.ContentSet where b.ManagerId == id select b).ToListAsync();
+                //db.ContentSet.Where(x => x.ManagerId == id).ToList().Select( x => new ContentDTO()
+                //{
+                //  Date = x.Date,
+                //    Client = x.Client,
+                //    Item = x.Item,
+                //    Price = x.Price
+                //});
+                listContentDTO =   new List<ContentDTO>();
+                foreach (var cont in  content)
                 {
-                  Date = x.Date,
-                    Client = x.Client,
-                    Item = x.Item,
-                    Price = x.Price
-                });
-                listContentDTO = new List<ContentDTO>();
-                foreach (var contentDto in content)
-                {
+                    ContentDTO contentDto = new ContentDTO();
+                    contentDto.Date = cont.Date; 
+                    contentDto.Client = cont.Client;
+                    contentDto.Item = cont.Item;
+                    contentDto.Price = cont.Price;
+
                     listContentDTO.Add(contentDto);
                 }
 

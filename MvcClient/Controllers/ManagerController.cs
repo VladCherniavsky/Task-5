@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BLL;
@@ -13,26 +14,26 @@ namespace MvcClient.Controllers
         //
         // GET: /Manager/
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             Worker worker = new Worker();
-            var managers = worker.GetAll();
+            var managers = await  worker.GetAllAsync();
             return View(managers);
         }
 
         //
         // GET: /Manager/Edit/
-        public ActionResult Edit( int id)
-        {
-            Worker worker = new Worker();
-            var manager = worker.GetOneManagerByIf(id);
-            return View(manager);
-        }
+        //public ActionResult Edit( int id)
+        //{
+        //    Worker worker = new Worker();
+        //    var manager = worker.GetOneManagerByIf(id);
+        //    return View(manager);
+        //}
 
-        public ActionResult Details(int id) 
+        public async Task<ActionResult> Details(int id) 
         {
             Worker worker = new Worker();
-            var contents = worker.GetContentForOneManager(id);
+            var contents = await worker.GetContentForOneManagerAsync(id);
             return View(contents);
         }
 
