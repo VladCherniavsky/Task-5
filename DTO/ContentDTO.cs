@@ -11,7 +11,9 @@ namespace DTO
     public class ContentDTO
     {
         public int Id { get; set; }
-      
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public System.DateTime Date { get; set; }
         public string Price { get; set; }
         public int ManagerId { get; set; }

@@ -50,7 +50,7 @@ namespace MvcClient.Controllers
                 Worker worker = new Worker();
                 worker.AddContentForOneManager(newContent);
 
-                //return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             else
             {
