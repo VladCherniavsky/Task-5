@@ -188,11 +188,13 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
+    <Compile Include="Controllers\ManagersController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ManagerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -310,6 +312,7 @@
     <Content Include="Views\Manager\Edit.cshtml" />
     <Content Include="Views\Manager\Details.cshtml" />
     <Content Include="Views\Manager\Create.cshtml" />
+    <Content Include="Views\Managers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -321,10 +324,6 @@
     <ProjectReference Include="..\BLL\BLL.csproj">
       <Project>{46FDD41D-6BE3-46DB-9236-26AFBF53D82C}</Project>
       <Name>BLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DTO\DTO.csproj">
-      <Project>{447c2632-2cd6-4dcc-9d45-461e8b13f417}</Project>
-      <Name>DTO</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

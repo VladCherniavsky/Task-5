@@ -61,10 +61,6 @@
       <Project>{46FDD41D-6BE3-46DB-9236-26AFBF53D82C}</Project>
       <Name>BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DTO\DTO.csproj">
-      <Project>{447C2632-2CD6-4DCC-9D45-461E8B13F417}</Project>
-      <Name>DTO</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

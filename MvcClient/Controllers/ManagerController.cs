@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BLL;
-using DTO;
 
 namespace MvcClient.Controllers
 {
@@ -13,12 +12,13 @@ namespace MvcClient.Controllers
     {
         //
         // GET: /Manager/
+      
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            Worker worker = new Worker();
-            var managers = await  worker.GetAllAsync();
-            return View(managers);
+            //var managers = _worker.GetAll();
+            //return View(managers);
+            return View();
         }
 
         //
@@ -30,34 +30,34 @@ namespace MvcClient.Controllers
         //    return View(manager);
         //}
 
-        public async Task<ActionResult> Details(int id) 
-        {
-            Worker worker = new Worker();
-            var contents = await worker.GetContentForOneManagerAsync(id);
-            return View(contents);
-        }
+        //public async ActionResult Details(int id) 
+        //{
+        //    Worker worker = new Worker();
+        //    var contents = await worker.GetContentForOneManagerAsync(id);
+        //    return View(contents);
+        //}
 
-        public ActionResult Create()
-        {
-            return View();
-        }
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public ActionResult Create(ContentDTO newContent)
-        {
+        //[HttpPost]
+        //public ActionResult Create(ContentDTO newContent)
+        //{
 
-            if (ModelState.IsValid)
-            {
-                Worker worker = new Worker();
-                worker.AddContentForOneManager(newContent);
+        //    if (ModelState.IsValid)
+        //    {
+        //        Worker worker = new Worker();
+        //        worker.AddContentForOneManager(newContent);
 
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return View(newContent);
-            }
-        }
+        //        return RedirectToAction("Index");
+        //    }
+        //    else
+        //    {
+        //        return View(newContent);
+        //    }
+        //}
 
 
 
