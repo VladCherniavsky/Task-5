@@ -2,7 +2,7 @@
     ViewBag.Title = "Google charts with MVC 4";
 }
   
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery.min.js"></script>
 
 <script type="text/javascript" src="~/Scripts/jsapi.js"></script>
 <script type="text/javascript">
@@ -37,9 +37,9 @@
                 chart.draw(data,
                 {
                     title: "Show Google Chart in ASP.NET",
-                    position: "top",
-                    fontsize: "14px",
-                    chartArea: { width: '50%' },
+                    position: "center",
+                    fontsize: "50px",
+                    chartArea: { width: '100%' },
                 });
             },
             error: function () {

@@ -18,11 +18,13 @@ namespace WebApplication3.Controllers
             _worker = new Worker();
         }
         // GET: Manager
-
+        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
+
+       [Authorize]
         public ActionResult AllManagers()
         {
             IList<ManagerModels> listOfManagers = new List<ManagerModels>();
@@ -42,6 +44,7 @@ namespace WebApplication3.Controllers
         }
 
         // GET: Manager/Details/5
+         [Authorize]
         public ActionResult Details(int id)
         {
             IList<ContentModels> listOfcontent = new List<ContentModels>();
@@ -64,6 +67,8 @@ namespace WebApplication3.Controllers
         }
 
         // GET: Manager/Create
+
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -71,6 +76,7 @@ namespace WebApplication3.Controllers
 
         // POST: Manager/Create
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "ClientName,ItemName,Date,Price,ManagerName")] FormCollection collection)
         {
             try
@@ -97,6 +103,7 @@ namespace WebApplication3.Controllers
         }
 
         // GET: Manager/Edit/5
+        //[Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             var content = _worker.GetOneContent(id);
@@ -116,7 +123,10 @@ namespace WebApplication3.Controllers
         }
 
         // POST: Manager/Edit/5
+        
+        
         [HttpPost]
+       // [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "ClientName,ItemName,Date,Price,Id")] FormCollection content)
         {
             try
@@ -149,6 +159,7 @@ namespace WebApplication3.Controllers
         }
 
         // GET: Manager/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             return View();
@@ -156,6 +167,7 @@ namespace WebApplication3.Controllers
 
         // POST: Manager/Delete/5
         [HttpPost]
+       // [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id, FormCollection collection)
         {
             try
@@ -171,12 +183,15 @@ namespace WebApplication3.Controllers
             }
         }
 
+
+        [Authorize]
         public ActionResult Search()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult Search( FormCollection collection)
+        [Authorize]
+        public ViewResult Search( FormCollection collection)
         {
           IList<ContentModels> listOfcontent = new List<ContentModels>();
             string clientName = collection["ClientName"];

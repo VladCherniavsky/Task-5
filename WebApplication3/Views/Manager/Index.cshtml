@@ -13,18 +13,18 @@
     UpdateTargetId = "divManagers",
     InsertionMode = InsertionMode.Replace
 
-})|
+})   |
 @Ajax.ActionLink("Show the most perspective manager", "Index","Chart" ,new AjaxOptions()
 {
     HttpMethod = "GET",
    // UpdateTargetId = "divManagers",
     InsertionMode = InsertionMode.InsertAfter
 
-})
+})   |   
 @Ajax.ActionLink("Search", "Search", "Manager", new AjaxOptions()
 {
     HttpMethod = "GET",
-    // UpdateTargetId = "divManagers",
+    UpdateTargetId = "divManagers",
     InsertionMode = InsertionMode.InsertAfter
 
 })
