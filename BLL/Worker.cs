@@ -5,205 +5,189 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using BLL.Specification;
 using DAL;
 using DAL.Repositories;
+using Microsoft.Owin;
 
 
 namespace BLL
 {
     public class Worker: IWorker
     {
-        IManagerRepository _managerRepository;
+        private IManagerRepository _managerRepository;
+        private IContentRepository _contentRepository;
+        private IClientRepository _clientRepository;
+        private IItemRepository _itemRepository;
+
         
 
         public Worker()
         {
             _managerRepository = new MaanagerRepository(new DbModelContainer());
+            _clientRepository = new ClientRepository(new DbModelContainer());
+            _itemRepository = new ItemRepository(new DbModelContainer());
+            _contentRepository = new ContentRepository(new DbModelContainer());
         }
 
-        public IList<ViewContent> GetAll()
+        public IList<ViewManager> GetAllManagers()
         {
-            List<ViewContent> viewModelList = new List<ViewContent>();
-            ViewContent _viewModel;
+            List<ViewManager> viewModelList = new List<ViewManager>();
+            ViewManager _viewModel;
             var managers = _managerRepository.GetAll();
             foreach (var manager in managers)
             {
-                _viewModel = new ViewContent();
+                _viewModel = new ViewManager();
                 _viewModel.Id= manager.Id;
-                _viewModel.ManagerName = manager.Name;
+                _viewModel.Name = manager.Name;
                 viewModelList.Add(_viewModel);
             }
 
             return viewModelList;
         }
-    }
-
-    //    private Object _lockerForManager;
-    //    public async Task<IList<ManagerDTO>>  GetAllAsync()
-    //    {
-    //        List<ManagerDTO> managers = new List<ManagerDTO>();
-    //        using (DbModelContainer db = new DbModelContainer())
-    //        {
-    //            var managersList = db.ManagerSet.ToListAsync();
-    //            foreach (var manager in await managersList)
-    //            {
-    //                ManagerDTO managerDto = new ManagerDTO(manager);
-                   
-    //                managers.Add(managerDto);
-    //            }
-    //        }
-    //        return managers;
-    //    }
-
-    //    //public async Task<ManagerDTO> GetOneManagerByIdAsync(int id)
-    //    //{
-    //    //    ManagerDTO managertoEdit;
-    //    //    using (DbModelContainer db = new DbModelContainer())
-    //    //    {
-    //    //        var manager = db.ManagerSet.SingleOrDefaultAsync(x => x.Id == id);
-    //    //        managertoEdit =   new  ManagerDTO();
-    //    //        managertoEdit.Id = manager.Id;
-    //    //        managertoEdit.Name = manager.
-
-    //    //    }
-    //    //   return managertoEdit;
-    //    //}
-
-    //    public async  Task<IList<ContentDTO>> GetContentForOneManagerAsync(int id)
-    //    {
-    //        List<ContentDTO> listContentDTO;
-    //        using (DbModelContainer db = new DbModelContainer())
-    //        {
-    //            var content =  (from b in db.ContentSet where b.ManagerId == id select b).ToListAsync();
-    //            //db.ContentSet.Where(x => x.ManagerId == id).ToList().Select( x => new ContentDTO()
-    //            //{
-    //            //  Date = x.Date,
-    //            //    Client = x.Client,
-    //            //    Item = x.Item,
-    //            //    Price = x.Price
-    //            //});
-    //            listContentDTO =   new List<ContentDTO>();
-    //            foreach (var cont in await content)
-    //            {
-    //                ContentDTO contentDto = new ContentDTO();
-    //                contentDto.Date = cont.Date; 
-    //                contentDto.Client = cont.Client;
-    //                contentDto.Item = cont.Item;
-    //                contentDto.Price = cont.Price;
-
-    //                listContentDTO.Add(contentDto);
-    //            }
-
-    //        }
-    //        return listContentDTO;
-    //    }
-
-    //    public void AddContentForOneManager(ContentDTO newContent)
-    //    {
-    //        _lockerForManager = new object();
-           
-    //        Manager manager = GetOrCreateManager(newContent.Manager.Name);
-    //        Client client = GetOrCreateClient(newContent.Client.Name);
-    //        Item item  = GetOrCreateItem(newContent.Item.Name);
-    //        AddContent(newContent,  manager,  client,  item);
-
-    //    }
-
-    //    protected Manager GetOrCreateManager(string managerName)
-    //    {
-    //        Manager manager = null;
-    //        using (DbModelContainer dcModel = new DbModelContainer())
-    //        {
-    //            lock (_lockerForManager)
-    //            {
-    //                var man = dcModel.ManagerSet.FirstOrDefault(x => x.Name == managerName);
-    //                if (man == null)
-    //                {
-    //                    var managerAdd = new Manager() { Name = managerName };
-    //                    dcModel.ManagerSet.Add(managerAdd);
-    //                    dcModel.SaveChanges();
-
-    //                    var maner = dcModel.ManagerSet.FirstOrDefault(x => x.Name == managerName);
-    //                    manager = new Manager() { Name = maner.Name, Id = maner.Id };
-    //                }
-    //                else
-    //                {
-    //                    manager = new Manager() { Name = man.Name, Id = man.Id };
-    //                }
-    //            }
-    //        }
-    //        return manager;
-    //    }
-    //    private Item GetOrCreateItem(string itemName)
-    //    {
-    //        Item item = null;
-    //        using (DbModelContainer dcModel = new DbModelContainer())
-    //        {
-    //            lock (_lockerForManager)
-    //            {
-    //                var man = dcModel.ItemSet.FirstOrDefault(x => x.Name == itemName);
-    //                if (man == null)
-    //                {
-    //                    item = new Item() { Name = itemName };
-    //                    dcModel.ItemSet.Add(item);
-    //                    dcModel.SaveChanges();
-
-    //                    var maner = dcModel.ItemSet.FirstOrDefault(x => x.Name == itemName);
-    //                    item = new Item() { Name = maner.Name, Id = maner.Id };
-    //                }
-    //                else
-    //                {
-    //                    item = new Item() { Name = man.Name, Id = man.Id };
-    //                }
-    //            }
-    //        }
-    //        return item;
-    //    }
-
-    //    private Client GetOrCreateClient(string clientName)
-    //    {
-    //        Client client = null;
-    //        using (DbModelContainer dcModel = new DbModelContainer())
-    //        {
-    //            lock (_lockerForManager)
-    //            {
-    //                var man = dcModel.ClientSet.FirstOrDefault(x => x.Name == clientName);
-    //                if (man == null)
-    //                {
-    //                    client = new Client() { Name= clientName };
-    //                    dcModel.ClientSet.Add(client);
-    //                    dcModel.SaveChanges();
-
-    //                    var maner = dcModel.ClientSet.FirstOrDefault(x => x.Name == clientName);
-    //                    client = new Client() { Name = maner.Name, Id = maner.Id };
-    //                }
-    //                else
-    //                {
-    //                    client = new Client() { Name = man.Name, Id = man.Id };
-    //                }
-    //            }
-    //        }
-    //        return client;
-    //    }
 
        
 
-    //    protected void AddContent(ContentDTO newContent, Manager manager, Client client, Item item)
-    //    {
-    //        using (var db = new DbModelContainer())
-    //        {
-    //            db.ContentSet.Add(new Content()
-    //            {
-    //                ClientId = client.Id,
-    //                Client = client,
-    //                Date = newContent.Date,
-    //                ItemId = item.Id,
-    //                Price = newContent.Price,
-    //                ManagerId = manager.Id
-    //            });
-    //            db.SaveChanges();
-    //        }
-    //    }
+        public IList<ViewContent> GetAllOrdersForManager(int? id)
+        {
+            IList<ViewContent> viewContents = new List<ViewContent>();
+            ViewContent _viewContent;
+            var contents = _contentRepository.GetList(x => x.ManagerId == id);
+            foreach (var content in contents)
+            {
+                
+                _viewContent = new ViewContent();
+                _viewContent.Id = content.Id;
+                _viewContent.ManagerName = content.Manager.Name;
+                _viewContent.ClientName = content.Client.Name;
+                _viewContent.Date = content.Date;
+                _viewContent.ItemName = content.Item.Name;
+                _viewContent.Price = Convert.ToInt32(content.Price);
 
-    //}
+                viewContents.Add(_viewContent);
+            }
+            return viewContents;
+        }
+        
+
+        public ViewContent GetOneContent(int? id)
+        {
+            var content = _contentRepository.GetSingle(x => x.Id == id);
+            ViewContent viewContent = new ViewContent()
+            {
+                //Id = content.Id,
+                ClientName = content.Client.Name,
+                ItemName = content.Item.Name,
+                Date = content.Date,
+                Price = Convert.ToInt32(content.Price)
+            };
+            return viewContent;
+
+
+        }
+
+        public void DeleteContent(int? id)
+        {
+            var content = _contentRepository.GetSingle(x => x.Id == id);
+            _contentRepository.Delete(content.Id);
+        }
+
+
+        public void UpdateContent(ViewContent viewContent)
+        {
+           
+            var contentToEdit = _contentRepository.GetSingle(x => x.Id == viewContent.Id);
+            Client client = new Client();
+            client.Id = contentToEdit.ClientId;
+            client.Name = viewContent.ClientName;
+
+            _clientRepository.Update(client);
+
+            Item item = new Item();
+            item.Id = contentToEdit.ItemId;
+            item.Name = viewContent.ItemName;
+            _itemRepository.Update(item);
+
+          
+            contentToEdit.Date = viewContent.Date;          
+            contentToEdit.Price = Convert.ToString(viewContent.Price);
+          
+           
+
+            _contentRepository.Update(contentToEdit);
+        }
+
+        public void AddNewInfo(ViewContent viewContent)
+        {
+            var manager = _managerRepository.GetSingle(x => x.Name == viewContent.ManagerName);
+            Content content = new Content();
+            if (manager == null)
+            {
+                _managerRepository.Add(new Manager(){Name = viewContent.ManagerName});
+                var newManager = _managerRepository.GetSingle(x => x.Name == viewContent.ManagerName);
+                content.ManagerId = newManager.Id;
+            }
+            else
+            {
+                content.ManagerId = manager.Id;
+            }
+
+            var client = _clientRepository.GetSingle(x => x.Name == viewContent.ClientName);
+            if (client == null)
+            {
+                _clientRepository.Add(new Client(){Name = viewContent.ClientName});
+                var newClient = _clientRepository.GetSingle(x => x.Name == viewContent.ClientName);
+                content.ClientId = newClient.Id;
+            }
+            else
+            {
+                content.ClientId = client.Id;
+            }
+            var item = _itemRepository.GetSingle(x => x.Name == viewContent.ItemName);
+            if (item == null)
+            {
+                _itemRepository.Add(new Item(){Name = viewContent.ItemName});
+                var newItem = _itemRepository.GetSingle(x => x.Name == viewContent.ItemName);
+                content.ItemId = newItem.Id;
+            }
+            else
+            {
+                content.ItemId = item.Id;
+            }
+            content.Date = viewContent.Date;
+            content.Price = Convert.ToString(viewContent.Price);
+            _contentRepository.Add(content);
+
+        }
+
+        public IList<ViewContent> GetAllContent()
+        {
+            IList<ViewContent> viewContents = new List<ViewContent>();
+            ViewContent _viewContent;
+            var contents = _contentRepository.GetAll();
+            foreach (var content in contents)
+            {
+
+                _viewContent = new ViewContent();
+                _viewContent.Id = content.Id;
+                _viewContent.ManagerName = content.Manager.Name;
+                _viewContent.ClientName = content.Client.Name;
+                _viewContent.Date = content.Date;
+                _viewContent.ItemName = content.Item.Name;
+                _viewContent.Price = Convert.ToInt32(content.Price);
+
+                viewContents.Add(_viewContent);
+            }
+            return viewContents;
+        }
+
+        public IEnumerable<ViewContent> Search(SearchSpecification specification)
+        {
+            return specification.SatisfiedBy(GetAllContent());
+        }
+    }
+
+   
+    
+   
 }

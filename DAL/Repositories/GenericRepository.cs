@@ -39,6 +39,8 @@ namespace DAL.Repositories
         public void Update(T item)
         {
             _context.Entry(item).State = EntityState.Modified;
+            _context.SaveChanges();
+
         }
 
         public void Delete(int itemId)
