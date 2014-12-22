@@ -6,7 +6,7 @@ namespace WebApplication3.Models.Models
     public class ContentModels
     {
         public int Id { get; set; }
-
+        [Display(Name = "Manager")]
         public string ManagerName { get; set; }
         [Display(Name = "Client")]
         public string ClientName { get; set; }

@@ -11,11 +11,11 @@ namespace BLL
     public interface IWorker
     {
         IList<ViewManager> GetAllManagers();
-        IList<ViewContent> GetAllOrdersForManager(int? id);
+        IList<ViewContent> GetAllOrdersForManager(int id);
         IList<ViewContent> GetAllContent();
 
-        ViewContent GetOneContent(int? id);
-        void DeleteContent (int? id);
+        ViewContent GetOneContent(int id);
+        void DeleteContent (int id);
 
         void UpdateContent(ViewContent viewContent);
 

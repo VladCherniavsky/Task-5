@@ -59,6 +59,7 @@
     <Compile Include="Specification\IContentSpecification.cs" />
     <Compile Include="Specification\ISpecification.cs" />
     <Compile Include="Specification\ItemContentSpecification.cs" />
+    <Compile Include="Specification\ManagerContentSpecification.cs" />
     <Compile Include="Specification\SearchSpecification.cs" />
     <Compile Include="ViewModels\ViewClient.cs" />
     <Compile Include="ViewModels\ViewContent.cs" />

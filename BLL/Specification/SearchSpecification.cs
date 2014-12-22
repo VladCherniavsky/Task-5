@@ -16,7 +16,8 @@ namespace BLL.Specification
         {
             return new ClientContentSpecification(ClientName).SatisfiedBy(
                 new DateContentSpecification(Date).SatisfiedBy(
-                    new ItemContentSpecification(ItemName).SatisfiedBy(content)));
+                    new ItemContentSpecification(ItemName).SatisfiedBy(
+                        new ManagerContentSpecification(ManagerName).SatisfiedBy(content))));
         }
     }
 }

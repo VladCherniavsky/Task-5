@@ -17,7 +17,7 @@ namespace BLL.Specification
 
         public IEnumerable<ViewContent> SatisfiedBy(IEnumerable<ViewContent> content)
         {
-            return !String.IsNullOrEmpty(_itemName) ? content.Where(x => x.ItemName == _itemName) : content;
+            return !String.IsNullOrEmpty(_itemName) ? content.Where(x => x.ItemName.Contains(_itemName)) : content;
         }
     }
 }

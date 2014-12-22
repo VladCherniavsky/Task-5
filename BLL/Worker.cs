@@ -32,61 +32,28 @@ namespace BLL
 
         public IList<ViewManager> GetAllManagers()
         {
-            List<ViewManager> viewModelList = new List<ViewManager>();
-            ViewManager _viewModel;
             var managers = _managerRepository.GetAll();
-            foreach (var manager in managers)
-            {
-                _viewModel = new ViewManager();
-                _viewModel.Id= manager.Id;
-                _viewModel.Name = manager.Name;
-                viewModelList.Add(_viewModel);
-            }
 
-            return viewModelList;
+            return managers.Select(manager => manager.ToViewManager()).ToList();
         }
 
        
 
-        public IList<ViewContent> GetAllOrdersForManager(int? id)
+        public IList<ViewContent> GetAllOrdersForManager(int id)
         {
-            IList<ViewContent> viewContents = new List<ViewContent>();
-            ViewContent _viewContent;
             var contents = _contentRepository.GetList(x => x.ManagerId == id);
-            foreach (var content in contents)
-            {
-                
-                _viewContent = new ViewContent();
-                _viewContent.Id = content.Id;
-                _viewContent.ManagerName = content.Manager.Name;
-                _viewContent.ClientName = content.Client.Name;
-                _viewContent.Date = content.Date;
-                _viewContent.ItemName = content.Item.Name;
-                _viewContent.Price = Convert.ToInt32(content.Price);
 
-                viewContents.Add(_viewContent);
-            }
-            return viewContents;
+            return contents.Select(content => content.ToViewContent()).ToList();
         }
         
 
-        public ViewContent GetOneContent(int? id)
+        public ViewContent GetOneContent(int id)
         {
-            var content = _contentRepository.GetSingle(x => x.Id == id);
-            ViewContent viewContent = new ViewContent()
-            {
-                //Id = content.Id,
-                ClientName = content.Client.Name,
-                ItemName = content.Item.Name,
-                Date = content.Date,
-                Price = Convert.ToInt32(content.Price)
-            };
-            return viewContent;
 
-
+            return _contentRepository.GetSingle(x => x.Id == id).ToViewContent(); 
         }
 
-        public void DeleteContent(int? id)
+        public void DeleteContent(int id)
         {
             var content = _contentRepository.GetSingle(x => x.Id == id);
             _contentRepository.Delete(content.Id);
@@ -97,23 +64,20 @@ namespace BLL
         {
            
             var contentToEdit = _contentRepository.GetSingle(x => x.Id == viewContent.Id);
-            Client client = new Client();
-            client.Id = contentToEdit.ClientId;
-            client.Name = viewContent.ClientName;
-
-            _clientRepository.Update(client);
-
-            Item item = new Item();
-            item.Id = contentToEdit.ItemId;
-            item.Name = viewContent.ItemName;
-            _itemRepository.Update(item);
-
-          
+            _clientRepository.Update(new Client()
+            {
+                Id = contentToEdit.ClientId,
+                Name = viewContent.ClientName
+            });
+           
+            _itemRepository.Update(new Item()
+            {
+                Id = contentToEdit.ItemId,
+                Name = viewContent.ItemName
+                
+            });
             contentToEdit.Date = viewContent.Date;          
             contentToEdit.Price = Convert.ToString(viewContent.Price);
-          
-           
-
             _contentRepository.Update(contentToEdit);
         }
 
@@ -162,23 +126,8 @@ namespace BLL
 
         public IList<ViewContent> GetAllContent()
         {
-            IList<ViewContent> viewContents = new List<ViewContent>();
-            ViewContent _viewContent;
             var contents = _contentRepository.GetAll();
-            foreach (var content in contents)
-            {
-
-                _viewContent = new ViewContent();
-                _viewContent.Id = content.Id;
-                _viewContent.ManagerName = content.Manager.Name;
-                _viewContent.ClientName = content.Client.Name;
-                _viewContent.Date = content.Date;
-                _viewContent.ItemName = content.Item.Name;
-                _viewContent.Price = Convert.ToInt32(content.Price);
-
-                viewContents.Add(_viewContent);
-            }
-            return viewContents;
+            return contents.Select(content => content.ToViewContent()).ToList();
         }
 
         public IEnumerable<ViewContent> Search(SearchSpecification specification)
@@ -187,7 +136,30 @@ namespace BLL
         }
     }
 
-   
-    
-   
+
+
+    public static class ExtensionsMethod
+    {
+        public static ViewManager ToViewManager(this Manager manager)
+        {
+            return new ViewManager()
+            {
+                Id= manager.Id,
+                Name = manager.Name
+            };
+        }
+
+        public static ViewContent ToViewContent(this Content content)
+        {
+            return  new ViewContent()
+            {
+                Id = content.Id,
+                ManagerName = content.Manager.Name,
+                ClientName = content.Client.Name,
+                Date = content.Date,
+                ItemName = content.Item.Name,
+                Price = Convert.ToInt32(content.Price)
+            };
+        }
+    }
 }
